@@ -1,0 +1,73 @@
+package ru.aesaq.pastebin.entity;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "posts")
+public class Post {
+
+    @Id
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "user_id")
+    private Long user_id;
+    @Column(name = "title")
+    private String title;
+    @Column(name = "content")
+    private String content;
+    @Column(name = "created_at")
+    private Long created_at;
+    @Column(name = "updated_at")
+    private Long updated_at;
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Long getUserId() {
+        return user_id;
+    }
+
+    public void setUserId(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public Long getCreatedAt() {
+        return created_at;
+    }
+
+    public void setCreatedAt(Long created_at) {
+        this.created_at = created_at;
+    }
+
+    public Long getUpdatedAt() {
+        return updated_at;
+    }
+
+    public void setUpdatedAt(Long updated_at) {
+        this.updated_at = updated_at;
+    }
+}
