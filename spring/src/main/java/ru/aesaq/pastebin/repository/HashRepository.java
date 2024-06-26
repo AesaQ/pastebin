@@ -11,4 +11,6 @@ public interface HashRepository extends JpaRepository<Hash, Long> {
     Optional<Hash> findByHash(String hash);
 
     Long countByIsUsedFalse();
+
+    Hash findFirstByIsUsedFalse();
 }

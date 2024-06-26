@@ -2,8 +2,10 @@ package ru.aesaq.pastebin.service;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Service;
+import ru.aesaq.pastebin.entity.Hash;
 import ru.aesaq.pastebin.entity.Post;
 import ru.aesaq.pastebin.entity.User;
+import ru.aesaq.pastebin.repository.HashRepository;
 import ru.aesaq.pastebin.repository.PostRepository;
 import ru.aesaq.pastebin.validator.Validator;
 
@@ -12,11 +14,13 @@ import java.util.Optional;
 @Service
 public class PostService {
     private final PostRepository postRepository;
+    private final HashRepository hashRepository;
     private final Validator validator;
     private final HttpSession session;
 
-    public PostService(PostRepository postRepository, Validator validator, HttpSession session) {
+    public PostService(PostRepository postRepository, HashRepository hashRepository, Validator validator, HttpSession session) {
         this.postRepository = postRepository;
+        this.hashRepository = hashRepository;
         this.validator = validator;
         this.session = session;
     }
@@ -32,10 +36,13 @@ public class PostService {
         if (newPost.getDestroyTime() != null) {
             destroyTime = newPost.getDestroyTime();
         }
+
+        Hash hash = hashRepository.findFirstByIsUsedFalse();
         Post resultPost = new Post(
                 ((User) session.getAttribute("user")).getId(),
                 newPost.getTitle(),
                 newPost.getContent(),
+                hash.getHash(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis() + destroyTime
