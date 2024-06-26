@@ -14,7 +14,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public String register(@RequestBody User user) {
-        return authenticationService.register(user);
+        return authenticationService.register(user.getUsername(), user.getPassword());
     }
 
     @PostMapping("/login")

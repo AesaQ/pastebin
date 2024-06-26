@@ -1,24 +1,26 @@
 package ru.aesaq.pastebin.service;
 
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.aesaq.pastebin.entity.User;
 import ru.aesaq.pastebin.repository.UserRepository;
 
 @Service
 public class AuthenticationService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public String register(User user) {
-        if (user.getUsername() == null) {
+    public AuthenticationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public String register(String username, String password) {
+        if (username == null || username.equals("")) {
             return "Username is null";
         }
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(username) != null) {
             return "Username already exists";
         }
-        userRepository.save(user);
+        userRepository.save(new User(username, password));
         return "User registered successfully";
     }
 

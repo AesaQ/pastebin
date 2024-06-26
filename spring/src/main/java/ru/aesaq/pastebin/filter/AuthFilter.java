@@ -23,15 +23,16 @@ public class AuthFilter implements Filter {
 
         String path = httpRequest.getRequestURI();
 
-        if (path.equals("/api/auth/login") || path.equals("/api/auth/register")) {
-            chain.doFilter(request, response);
-            return;
-        }
+        if (path.contains("/user/") ||
+                path.contains("/add") ||
+                path.contains("/remove") ||
+                path.contains("/edit")
+        ) {
 
-        if (session == null || session.getAttribute("user") == null) {
-            throw new ServletException("Unauthorized");
+            if (session == null || session.getAttribute("user") == null) {
+                throw new ServletException("Unauthorized");
+            }
         }
-
         chain.doFilter(request, response);
     }
 

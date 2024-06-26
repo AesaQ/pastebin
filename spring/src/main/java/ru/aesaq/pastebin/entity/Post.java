@@ -1,15 +1,21 @@
 package ru.aesaq.pastebin.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "posts")
 public class Post {
+    public Post(Long user_id, String title, String content, Long created_at, Long updated_at, Long destroy_time) {
+        this.user_id = user_id;
+        this.title = title;
+        this.content = content;
+        this.created_at = created_at;
+        this.updated_at = updated_at;
+        this.destroy_time = destroy_time;
+    }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
     @Column(name = "user_id")
@@ -17,11 +23,18 @@ public class Post {
     @Column(name = "title")
     private String title;
     @Column(name = "content")
+
     private String content;
     @Column(name = "created_at")
     private Long created_at;
     @Column(name = "updated_at")
     private Long updated_at;
+    @Column(name = "destroy_time")
+    private Long destroy_time;
+
+    public Post() {
+
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -69,5 +82,13 @@ public class Post {
 
     public void setUpdatedAt(Long updated_at) {
         this.updated_at = updated_at;
+    }
+
+    public Long getDestroyTime() {
+        return destroy_time;
+    }
+
+    public void setDestroyTime(Long destroy_time) {
+        this.destroy_time = destroy_time;
     }
 }
