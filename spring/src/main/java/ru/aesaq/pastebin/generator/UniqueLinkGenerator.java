@@ -15,6 +15,10 @@ public class UniqueLinkGenerator {
         this.hashRepository = hashRepository;
     }
 
+    public Long countByIsUsedFalse() {
+        return hashRepository.countByIsUsedFalse();
+    }
+
     public void generateUniqueLink(int length) {
         String uniqueValue = String.valueOf(UUID.randomUUID());
         Base64.Encoder URL_SAFE_ENCODER = Base64.getUrlEncoder().withoutPadding();

@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface HashRepository extends JpaRepository<Hash, Long> {
     Optional<Hash> findByHash(String hash);
+
+    Long countByIsUsedFalse();
 }
