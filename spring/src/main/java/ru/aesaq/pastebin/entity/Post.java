@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "posts")
 public class Post {
-    public Post(Long user_id, String title, String content, String Hash, Long created_at, Long updated_at, Long destroy_time) {
+    public Post(Long user_id, String title, String content, String hash, Long created_at, Long updated_at, Long destroy_time) {
         this.user_id = user_id;
         this.title = title;
         this.content = content;

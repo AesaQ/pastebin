@@ -48,7 +48,8 @@ public class PostService {
                 System.currentTimeMillis() + destroyTime
         );
         postRepository.save(resultPost);
-
+        hash.setUsed(true);
+        hashRepository.save(hash);
         return "the new post has been successfully created";
     }
 
@@ -84,5 +85,10 @@ public class PostService {
         postRepository.save(postUpdate);
         return true;
 
+    }
+
+    public Post findPostByHash(String hash) {
+        Optional<Post> result = postRepository.findPostByHash(hash);
+        return result.orElse(null);
     }
 }

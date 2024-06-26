@@ -14,6 +14,15 @@ public class PostController {
         this.postService = postService;
     }
 
+    @GetMapping("/get/{hash}")
+    public ResponseEntity<Post> getPost(@PathVariable String hash) {
+        Post result = postService.findPostByHash(hash);
+        if (result == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
+    }
+
     @PostMapping("/add")
     public String addPost(@RequestBody Post post) {
         return postService.addPost(post);
