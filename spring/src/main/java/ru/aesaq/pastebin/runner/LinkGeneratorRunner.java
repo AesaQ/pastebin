@@ -16,8 +16,11 @@ public class LinkGeneratorRunner implements CommandLineRunner {
     @Override
     @Async
     public void run(String... args) throws Exception {
-        while (linkGenerator.countByIsUsedFalse() < 100) {
-            linkGenerator.generateUniqueLink(8);
+        while (true) {
+            while (linkGenerator.countByIsUsedFalse() < 100) {
+                linkGenerator.generateUniqueLink(8);
+                Thread.sleep(1000L);
+            }
             Thread.sleep(1000L);
         }
     }
