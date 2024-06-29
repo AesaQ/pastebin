@@ -5,15 +5,15 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "posts")
 public class Post {
-    public Post(Long user_id, String title, String content, String hash, Long created_at, Long updated_at, Long destroy_time) {
+    public Post(Long user_id, String title, String hash, Long created_at, Long updated_at, Long destroy_time) {
         this.user_id = user_id;
         this.title = title;
-        this.content = content;
         this.hash = hash;
         this.created_at = created_at;
         this.updated_at = updated_at;
         this.destroy_time = destroy_time;
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +23,6 @@ public class Post {
     private Long user_id;
     @Column(name = "title")
     private String title;
-    @Column(name = "content")
-
     private String content;
     @Column(name = "created_at")
     private Long created_at;
@@ -94,4 +92,14 @@ public class Post {
     public void setDestroyTime(Long destroy_time) {
         this.destroy_time = destroy_time;
     }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
+    }
 }
+
+

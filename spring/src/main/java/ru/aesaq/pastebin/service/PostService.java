@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.aesaq.pastebin.entity.Hash;
 import ru.aesaq.pastebin.entity.Post;
 import ru.aesaq.pastebin.entity.User;
+import ru.aesaq.pastebin.manager.FileManager;
 import ru.aesaq.pastebin.repository.HashRepository;
 import ru.aesaq.pastebin.repository.PostRepository;
 import ru.aesaq.pastebin.validator.Validator;
@@ -17,12 +18,14 @@ public class PostService {
     private final HashRepository hashRepository;
     private final Validator validator;
     private final HttpSession session;
+    private final FileManager fileManager;
 
-    public PostService(PostRepository postRepository, HashRepository hashRepository, Validator validator, HttpSession session) {
+    public PostService(PostRepository postRepository, HashRepository hashRepository, Validator validator, HttpSession session, FileManager fileManager) {
         this.postRepository = postRepository;
         this.hashRepository = hashRepository;
         this.validator = validator;
         this.session = session;
+        this.fileManager = fileManager;
     }
 
     public String addPost(Post newPost) {
@@ -38,18 +41,21 @@ public class PostService {
         }
 
         Hash hash = hashRepository.findFirstByIsUsedFalse();
+
         Post resultPost = new Post(
                 ((User) session.getAttribute("user")).getId(),
                 newPost.getTitle(),
-                newPost.getContent(),
                 hash.getHash(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis(),
                 System.currentTimeMillis() + destroyTime
         );
+        fileManager.savePostContent(hash.getHash(), newPost.getContent());
         postRepository.save(resultPost);
+
         hash.setUsed(true);
         hashRepository.save(hash);
+
         return "the new post has been successfully created";
     }
 
@@ -64,6 +70,7 @@ public class PostService {
             return false;
         }
         postRepository.deleteById(id);
+        fileManager.deletePostContent(existingPost.getHash());
         return true;
     }
 
@@ -78,17 +85,26 @@ public class PostService {
             return false;
         }
         postUpdate.setId(id);
+        postUpdate.setHash(existingPost.getHash());
         postUpdate.setUserId(existingPost.getUserId());
         postUpdate.setCreatedAt(existingPost.getCreatedAt());
         postUpdate.setUpdatedAt(System.currentTimeMillis());
         postUpdate.setDestroyTime(existingPost.getDestroyTime());
         postRepository.save(postUpdate);
+        fileManager.editPostContent(existingPost.getHash(), postUpdate.getContent());
         return true;
 
     }
 
     public Post findPostByHash(String hash) {
-        Optional<Post> result = postRepository.findPostByHash(hash);
-        return result.orElse(null);
+        Optional<Post> optionalPost = postRepository.findPostByHash(hash);
+        if (optionalPost.isPresent()) {
+            Post result = optionalPost.get();
+            String content = fileManager.getPostContent(result.getHash());
+            result.setContent(content);
+            return result;
+        } else {
+            return null;
+        }
     }
 }

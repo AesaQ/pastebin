@@ -1,4 +1,4 @@
-package ru.aesaq.pastebin.async;
+package ru.aesaq.pastebin.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
