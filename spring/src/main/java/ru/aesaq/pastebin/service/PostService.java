@@ -1,6 +1,7 @@
 package ru.aesaq.pastebin.service;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import ru.aesaq.pastebin.entity.Hash;
 import ru.aesaq.pastebin.entity.Post;
@@ -39,7 +40,7 @@ public class PostService {
         if (newPost.getDestroyTime() != null) {
             destroyTime = newPost.getDestroyTime();
         }
-
+        System.out.println(newPost.getDestroyTime());
         Hash hash = hashRepository.findFirstByIsUsedFalse();
 
         Post resultPost = new Post(
@@ -106,5 +107,10 @@ public class PostService {
         } else {
             return null;
         }
+    }
+
+    @Transactional
+    public void deleteByDestroyTimeLessThan(Long time) {
+        postRepository.deleteByDestroyTimeLessThan(time);
     }
 }

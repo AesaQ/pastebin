@@ -5,13 +5,13 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "posts")
 public class Post {
-    public Post(Long user_id, String title, String hash, Long created_at, Long updated_at, Long destroy_time) {
+    public Post(Long user_id, String title, String hash, Long created_at, Long updated_at, Long destroyTime) {
         this.user_id = user_id;
         this.title = title;
         this.hash = hash;
         this.created_at = created_at;
         this.updated_at = updated_at;
-        this.destroy_time = destroy_time;
+        this.destroyTime = destroyTime;
     }
 
 
@@ -29,7 +29,7 @@ public class Post {
     @Column(name = "updated_at")
     private Long updated_at;
     @Column(name = "destroy_time")
-    private Long destroy_time;
+    private Long destroyTime;
     @Column(name = "hash")
     private String hash;
 
@@ -86,11 +86,11 @@ public class Post {
     }
 
     public Long getDestroyTime() {
-        return destroy_time;
+        return destroyTime;
     }
 
-    public void setDestroyTime(Long destroy_time) {
-        this.destroy_time = destroy_time;
+    public void setDestroyTime(Long destroyTime) {
+        this.destroyTime = destroyTime;
     }
 
     public String getHash() {
