@@ -120,10 +120,6 @@ public class PostService {
         }
     }
 
-    public Post findTestPost() {
-        return findPostByHash("NjM3NDNk");
-    }
-
     @Transactional
     public void deleteByDestroyTimeLessThan(Long time) {
         postRepository.deleteByDestroyTimeLessThan(time);

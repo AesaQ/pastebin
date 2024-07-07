@@ -17,16 +17,6 @@ public class PostController {
         this.postService = postService;
     }
 
-    @GetMapping("/cache/{hash}")
-    public ResponseEntity<Post> cache(@PathVariable String hash) {
-        log.info("PostController method");
-        Post result = postService.findPostByHash(hash);
-        if (result == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(result);
-    }
-
     @GetMapping("/get/{hash}")
     public ResponseEntity<Post> getPost(@PathVariable String hash) {
         Post result = postService.findPostByHash(hash);
