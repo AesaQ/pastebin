@@ -2,9 +2,11 @@ package ru.aesaq.pastebin.entity;
 
 import jakarta.persistence.*;
 
+import java.io.Serializable;
+
 @Entity
 @Table(name = "posts")
-public class Post {
+public class Post implements Serializable {
     public Post(Long user_id, String title, String hash, Long created_at, Long updated_at, Long destroyTime) {
         this.user_id = user_id;
         this.title = title;
@@ -32,6 +34,10 @@ public class Post {
     private Long destroyTime;
     @Column(name = "hash")
     private String hash;
+    @Column(name = "views")
+    private Long views;
+    @Column(name = "views_daily")
+    private Long dailyViews;
 
     public Post() {
 
@@ -99,6 +105,22 @@ public class Post {
 
     public void setHash(String hash) {
         this.hash = hash;
+    }
+
+    public Long getViews() {
+        return views;
+    }
+
+    public void setViews(Long views) {
+        this.views = views;
+    }
+
+    public Long getDailyViews() {
+        return dailyViews;
+    }
+
+    public void setDailyViews(Long dailyViews) {
+        this.dailyViews = dailyViews;
     }
 }
 

@@ -1,5 +1,7 @@
 package ru.aesaq.pastebin.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.aesaq.pastebin.entity.Post;
@@ -9,9 +11,20 @@ import ru.aesaq.pastebin.service.PostService;
 @RequestMapping("/api/post")
 public class PostController {
     private final PostService postService;
+    private final Logger log = LoggerFactory.getLogger(PostService.class);
 
     public PostController(PostService postService) {
         this.postService = postService;
+    }
+
+    @GetMapping("/cache/{hash}")
+    public ResponseEntity<Post> cache(@PathVariable String hash) {
+        log.info("PostController method");
+        Post result = postService.findPostByHash(hash);
+        if (result == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/get/{hash}")
@@ -21,6 +34,11 @@ public class PostController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/make")
+    public void makePosts() {
+        postService.makePosts(50);
     }
 
     @PostMapping("/add")

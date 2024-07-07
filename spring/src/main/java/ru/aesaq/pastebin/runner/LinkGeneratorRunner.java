@@ -1,7 +1,6 @@
 package ru.aesaq.pastebin.runner;
 
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import ru.aesaq.pastebin.generator.UniqueLinkGenerator;
 
@@ -14,14 +13,24 @@ public class LinkGeneratorRunner implements CommandLineRunner {
     }
 
     @Override
-    @Async
     public void run(String... args) throws Exception {
-        while (true) {
-            while (linkGenerator.countByIsUsedFalse() < 100) {
-                linkGenerator.generateUniqueLink(8);
-                Thread.sleep(1000L);
+        Thread thread = new Thread(() -> {
+            while (true) {
+                while (linkGenerator.countByIsUsedFalse() < 100) {
+                    linkGenerator.generateUniqueLink(8);
+                    try {
+                        Thread.sleep(1000L);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
             }
-            Thread.sleep(1000L);
-        }
+        });
+        thread.start();
     }
 }

@@ -15,13 +15,17 @@ public class PostDeletionRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        while (true) {
-            postService.deleteByDestroyTimeLessThan(System.currentTimeMillis());
-            try {
-                Thread.sleep(10000L);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+        Thread thread = new Thread(() -> {
+            while (true) {
+                postService.deleteByDestroyTimeLessThan(System.currentTimeMillis());
+                try {
+                    Thread.sleep(1000L);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+
             }
-        }
+        });
+        thread.start();
     }
 }
